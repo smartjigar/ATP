@@ -22,3 +22,5 @@
    Token Claim Name := group_name (Same as backend Application)
    Enable Add to Access Token 
 6. Manually Assign Group to users to allow specific Group
+
+### Alternatively provided realm-atp.json file to import directly in keycloak if you dont want to make upper steps manually 
