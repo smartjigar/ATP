@@ -51,19 +51,14 @@ public class APIRequestMatcher implements RequestMatcher {
         if (matchedAPi != null && !StringUtils.isEmpty(token)) {
             JWTClaimsSet claimsSet = this.fetchClaimSetFromToken(token);
             if (claimsSet == null) {
-                throw new BadDataException("Invalid Token","ATP-02-01");
+                return false;
             }
             ArrayList groupsName = (ArrayList) claimsSet.getClaim(AppConstants.CLAIMS_GROUP_NAME);
             if (groupsName != null && groupsName.size() > 0) {
                 List redisRolesWithGroup = this.cacheService.getRolesFromGroupName(groupsName);
-
-                if(!redisRolesWithGroup.contains(matchedAPi)){
-                    throw new BadDataException("Token Authorization Failed","ATP-02-03");
-                }
-                return true;
+                return redisRolesWithGroup.contains(matchedAPi);
             }else {
                 log.info("No Group found in claims");
-                throw new BadDataException("Token Authorization Failed","ATP-02-02");
             }
         }
         return false;
